@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { gsap } from 'gsap'
 
 export default function Header(): JSX.Element {
@@ -8,54 +8,88 @@ export default function Header(): JSX.Element {
   const nameRef = useRef<HTMLHeadingElement>(null)
   const titleRef = useRef<HTMLDivElement>(null)
   const taglineRef = useRef<HTMLParagraphElement>(null)
+  const [hasAnimated, setHasAnimated] = useState(false)
 
   useEffect(() => {
+    // Only animate once
+    if (hasAnimated) return
+
     const ctx = gsap.context(() => {
-      const tl = gsap.timeline()
+      const tl = gsap.timeline({
+        onComplete: () => setHasAnimated(true)
+      })
 
       // Animate header
-      tl.from(headerRef.current, {
-        y: -100,
-        opacity: 0,
-        duration: 1,
-        ease: 'power4.out',
-      })
+      tl.fromTo(headerRef.current, 
+        {
+          y: -100,
+          opacity: 0,
+        },
+        {
+          y: 0,
+          opacity: 1,
+          duration: 1,
+          ease: 'power4.out',
+        }
+      )
 
       // Animate name with split text
       if (nameRef.current) {
         const letters = nameRef.current.textContent?.split('') || []
         nameRef.current.innerHTML = letters
-          .map(letter => `<span class="inline-block">${letter}</span>`)
+          .map(letter => `<span class="inline-block">${letter === ' ' ? '&nbsp;' : letter}</span>`)
           .join('')
 
-        tl.from(nameRef.current.querySelectorAll('span'), {
-          y: 50,
-          opacity: 0,
-          rotationX: -90,
-          duration: 0.6,
-          stagger: 0.05,
-          ease: 'back.out(1.7)',
-        }, '-=0.5')
+        tl.fromTo(nameRef.current.querySelectorAll('span'), 
+          {
+            y: 50,
+            opacity: 0,
+            rotationX: -90,
+          },
+          {
+            y: 0,
+            opacity: 1,
+            rotationX: 0,
+            duration: 0.6,
+            stagger: 0.05,
+            ease: 'back.out(1.7)',
+          }, 
+          '-=0.5'
+        )
       }
 
       // Animate title
-      tl.from(titleRef.current, {
-        scale: 0,
-        opacity: 0,
-        duration: 0.8,
-        ease: 'back.out(1.7)',
-      }, '-=0.3')
+      tl.fromTo(titleRef.current, 
+        {
+          scale: 0,
+          opacity: 0,
+        },
+        {
+          scale: 1,
+          opacity: 1,
+          duration: 0.8,
+          ease: 'back.out(1.7)',
+        }, 
+        '-=0.3'
+      )
 
       // Animate tagline
-      tl.from(taglineRef.current, {
-        y: 20,
-        opacity: 0,
-        duration: 0.6,
-      }, '-=0.2')
+      tl.fromTo(taglineRef.current, 
+        {
+          y: 20,
+          opacity: 0,
+        },
+        {
+          y: 0,
+          opacity: 1,
+          duration: 0.6,
+        }, 
+        '-=0.2'
+      )
     })
 
     return () => ctx.revert()
-  }, [])
+  }, [hasAnimated])
 
   return (
     <header

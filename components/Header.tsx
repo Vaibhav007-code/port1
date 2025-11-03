@@ -150,6 +150,19 @@ export default function Header(): JSX.Element {
             <span className="w-1 h-1 rounded-full bg-purple-400 animate-pulse" style={{ animationDelay: '0.2s' }} />
             <span className="w-1 h-1 rounded-full bg-cyan-400 animate-pulse" style={{ animationDelay: '0.4s' }} />
           </div>
+
+          {/* My Resume / Portfolio link */}
+          <div className="mt-6 flex justify-center">
+            <a
+              href="https://drive.google.com/drive/folders/1-PVEefgZlJRWkQ-c3yMewEGNg4E3vigb"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 px-5 py-2 rounded-full bg-gradient-to-r from-pink-500 to-purple-600 text-white/90 hover:text-white hover:shadow-lg hover:shadow-pink-500/30 transition"
+              aria-label="My Resume / Portfolio"
+            >
+              My Resume / Portfolio <span aria-hidden>↗</span>
+            </a>
+          </div>
         </div>
       </div>
       

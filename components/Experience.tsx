@@ -63,6 +63,50 @@ export default function Experience(): JSX.Element {
       </div>
 
       <div className="space-y-6 sm:space-y-8">
+        {/* My Work card */}
+        <div
+          className={`relative ${isVisible ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-10'}`}
+          style={{ transition: 'opacity 0.6s ease-out, transform 0.6s ease-out' }}
+        >
+          <a
+            href="https://drive.google.com/drive/folders/1R9BBYE1ShOa-WHdMnvmDnI9IgwGxzpba"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="My Work (Google Drive folder)"
+            className="block focus:outline-none focus-visible:ring-2 focus-visible:ring-pink-500/40 rounded-2xl"
+          >
+            <div className="relative bg-gray-800/50 backdrop-blur-sm rounded-2xl p-5 sm:p-6 border border-purple-500/20 overflow-hidden group hover:border-pink-500/40 transition-colors">
+              <div className="relative z-10">
+                <div className="flex items-start justify-between mb-4">
+                  <div>
+                    <p className="text-xs sm:text-sm font-bold text-pink-400 mb-2 flex items-center gap-2">
+                      <span className="animate-pulse">🚀</span> Explore
+                    </p>
+                    <h3 className="font-playfair text-xl sm:text-2xl font-bold text-white mb-1">
+                      My Work
+                    </h3>
+                    <p className="text-purple-400 font-medium flex items-center gap-2 text-sm sm:text-base">
+                      <FaStar className="text-yellow-400" />
+                      CLICK HERE
+                    </p>
+                  </div>
+                  <div className="text-3xl sm:text-4xl opacity-20 group-hover:opacity-100 transition-opacity duration-300">
+                    🗂️
+                  </div>
+                </div>
+
+                <p className="text-gray-300 leading-relaxed text-sm sm:text-base">
+                  Click to open selected projects, designs, and deliverables.
+                </p>
+              </div>
+
+              <div className="absolute -top-2 -right-2 text-xl sm:text-2xl">
+                ✨
+              </div>
+            </div>
+          </a>
+        </div>
+
         {experienceData.map((item: ExperienceItem, index: number) => (
           <div
             key={index}

@@ -125,6 +125,7 @@ export default function Hero() {
                 fill
                 sizes="(max-width: 640px) 192px, (max-width: 1024px) 224px, 320px"
                 className="object-cover"
+                style={{ transform: 'rotate(-70deg)' }}
                 priority
                 quality={95}
               />

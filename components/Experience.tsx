@@ -13,7 +13,7 @@ const experienceData: ExperienceItem[] = [
       'Handling social media posts, designing digital and print media such as product packaging, promotional banners, and web content.',
   },
   {
-    year: '2024',
+    year: '2024 - ONGOING',
     company: 'Freelance',
     role: 'Graphic Designer',
     description:

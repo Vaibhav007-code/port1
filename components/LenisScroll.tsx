@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useLayoutEffect, useRef } from 'react'
+import { useEffect, useRef } from 'react'
 import Lenis from '@studio-freight/lenis'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
@@ -9,42 +9,45 @@ gsap.registerPlugin(ScrollTrigger)
 
 export default function LenisScroll({ children }: { children: React.ReactNode }) {
   const lenisRef = useRef<Lenis | null>(null)
+  const tickerRef = useRef<((time: number) => void) | null>(null)
 
-  useLayoutEffect(() => {
+  useEffect(() => {
+    const isTouch = window.matchMedia('(pointer: coarse)').matches
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+
     const lenis = new Lenis({
-      duration: 1.2,
-      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+      duration: isTouch ? 0.9 : 1.1,
+      easing: isTouch ? (t: number) => t : (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
       orientation: 'vertical',
       gestureOrientation: 'vertical',
-      smoothWheel: true,
+      smoothWheel: !reduceMotion,
       wheelMultiplier: 1,
-      touchMultiplier: 2,
-      infinite: false,
+      touchMultiplier: isTouch ? 0.9 : 1.2,
       autoResize: true,
+      infinite: false,
     })
 
     lenisRef.current = lenis
 
-    // Sync Lenis with GSAP ScrollTrigger
-    lenis.on('scroll', ScrollTrigger.update)
+    // Keep ScrollTrigger in sync
+    lenis.on('scroll', () => ScrollTrigger.update())
 
-    // Optimized RAF loop
-    gsap.ticker.add((time) => {
+    // Stable ticker callback so we can remove it on cleanup
+    const ticker = (time: number) => {
       lenis.raf(time * 1000)
-    })
-    
+    }
+    tickerRef.current = ticker
+    gsap.ticker.add(ticker)
     gsap.ticker.lagSmoothing(0)
 
-    // Refresh ScrollTrigger after setup
-    setTimeout(() => {
+    // Refresh after the first frame
+    requestAnimationFrame(() => {
       ScrollTrigger.refresh()
-    }, 100)
+    })
 
     return () => {
+      if (tickerRef.current) gsap.ticker.remove(tickerRef.current)
       lenis.destroy()
-      gsap.ticker.remove((time) => {
-        lenis.raf(time * 1000)
-      })
     }
   }, [])
 

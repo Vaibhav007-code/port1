@@ -7,7 +7,7 @@ import { ExperienceItem } from '@/types'
 const experienceData: ExperienceItem[] = [
   {
     year: '2024–2025',
-    company: 'Eras Fragrances',
+    company: 'Eraag Fragrances',
     role: 'Graphic Designer',
     description:
       'Handling social media posts, designing digital and print media such as product packaging, promotional banners, and web content.',
